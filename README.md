@@ -1,51 +1,171 @@
-![image](https://github.com/user-attachments/assets/b1e78897-c3bd-473f-abe7-3ca524ae2e78)
+# Iris
 
-## **Security Headers Checker**
+<img width="640" height="620" alt="image" src="https://github.com/user-attachments/assets/99083959-8dfa-4355-bd79-ba2e296ddbcd" />
 
-This Bash script is designed to assess the security posture of web applications by checking the presence and configuration of essential security headers in their HTTP responses. It includes functions to log messages with timestamps, check specific headers, and iterate through a list of common security headers for analysis.
+A powerful Python-based security tool that analyzes HTTP security headers for websites and automatically generates clickjacking payloads when vulnerabilities are detected.
 
-# **Features:**
+![Demo](https://img.shields.io/badge/Python-3.7+-blue.svg)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
+![Security](https://img.shields.io/badge/Security-Headers-red.svg)
 
-## Color Coding:
+## ✨ Features
 
-Uses ANSI escape codes to provide colored output for better readability:
-Green for positive results (e.g., header present).
-Red for negative results (e.g., header missing).
-Yellow for warnings and informative messages.
-Cyan for general messages and headers.
-Magenta for emphasis.
-Bold for highlighting.
-No Color (NC) to reset color.
-Generate Clickjacking Payload:
+- **Real-time Progress Tracking** - Beautiful progress bars with percentage completion
+- **Comprehensive Header Analysis** - Checks 11 critical security headers
+- **Automatic Payload Generation** - Creates clickjacking test payloads when X-Frame-Options is missing
+- **Rich Terminal Interface** - Colorful, modern CLI with animated spinners and styled tables
+- **SSL Bypass Support** - Works with sites having SSL certificate issues
+- **Fast Performance** - Single HTTP request for all header checks
 
-If the X-Frame-Options header is missing, the script offers to generate a Clickjacking payload.
-Creates an HTML file with an iframe that embeds the target URL, allowing for Clickjacking testing.
-Outputs the location of the generated file and instructions to open it in a browser.
-Check Security Headers:
+## 📋 Supported Security Headers
 
-## Checks the presence of various HTTP security headers:
-Content-Security-Policy
-X-Content-Type-Options
-X-Frame-Options
-X-XSS-Protection
-Strict-Transport-Security
-Referrer-Policy
-Feature-Policy (also checks Permissions-Policy as it is the newer name)
-Expect-CT
-Cache-Control
-Pragma
-Reports whether each header is present or missing, providing detailed output for each.
-URL Validation and Normalization:
+| Header | Description |
+|--------|-------------|
+| Content-Security-Policy | Prevents XSS and injection attacks |
+| X-Content-Type-Options | Prevents MIME type sniffing |
+| X-Frame-Options | Protects against clickjacking |
+| X-XSS-Protection | Enables XSS filtering |
+| Strict-Transport-Security | Enforces HTTPS connections |
+| Referrer-Policy | Controls referrer information |
+| Feature-Policy | Controls browser features |
+| Permissions-Policy | Modern replacement for Feature-Policy |
+| Expect-CT | Certificate transparency |
+| Cache-Control | Controls caching behavior |
+| Pragma | HTTP/1.0 cache control |
 
-## Checks if the input URL starts with http:// or https://. If not, it prepends http://.
-Validates the URL format to ensure it starts with http:// or https://.
-User Interaction:
+## 🚀 Installation
 
-Prompts the user to decide whether to generate a Clickjacking payload if the X-Frame-Options header is missing.
-Handles user input to either generate the payload, skip it, or show an error message for invalid choices.
-Clear Screen:
+### Prerequisites
+- Python 3.7 or higher
+- pip package manager
 
-Clears the terminal screen before starting the security headers check for a cleaner output display.
+### Quick Install
+1. Clone the repository:
+```
 
-**Usage:**
-- bash sechead.sh [target]
+git clone https://github.com/joelindra/iris.git
+cd iris
+
+```
+
+2. Install dependencies:
+```
+
+pip install -r requirements.txt
+
+```
+
+3. Make the script executable (Linux/macOS):
+```
+
+chmod +x iris.py
+
+```
+
+## 💻 Usage
+
+### Basic Usage
+```
+
+python3 iris.py <target_url>
+
+```
+
+### Examples
+```
+
+
+# Check a website with HTTPS
+
+python3 iris.py https://example.com
+
+# Check a website without protocol (defaults to HTTP)
+
+python3 iris.py example.com
+
+```
+
+## 📊 Sample Output
+
+```
+
+╭─────────── Iris ────────────╮
+│ 🔍 Security Headers Checker │
+╰─────────────────────────────╯
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┓
+┃ Header                    ┃ Status  ┃ Value / Notes     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━┩
+│ Content-Security-Policy   │ Missing │                   │
+│ X-Content-Type-Options    │ Missing │                   │
+│ X-Frame-Options           │ Missing │                   │
+│ X-XSS-Protection          │ Missing │                   │
+│ Strict-Transport-Security │ Missing │                   │
+│ Referrer-Policy           │ Missing │                   │
+│ Feature-Policy            │ Missing │                   │
+│ Permissions-Policy        │ Missing │                   │
+│ Expect-CT                 │ Missing │                   │
+│ Cache-Control             │ Present │ public, max-age=0 │
+│ Pragma                    │ Missing │                   │
+└───────────────────────────┴─────────┴───────────────────┘
+
+╭──────────────────────── Payload Generated ────────────────────────╮
+│ Clickjacking payload automatically created                        │
+│ because <target> vulnerable: clickjack_testing.html │
+│                                                                   │
+│ Open it in a browser to test.                                     │
+╰───────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────────╮
+│ Security headers check completed. │
+╰───────────────────────────────────╯
+```
+
+## 🔧 Configuration
+
+### SSL Certificate Issues
+The tool automatically bypasses SSL certificate verification to work with sites having certificate problems. This is intended for security testing purposes only.
+
+## 📁 Generated Files
+
+When X-Frame-Options header is missing, the tool automatically creates:
+- `clickjacking_payload.html` - HTML file for testing clickjacking vulnerabilities
+
+## ⚠️ Security Notice
+
+This tool is designed for:
+- **Authorized security testing** on your own websites
+- **Educational purposes** and learning about web security
+- **Compliance auditing** of web applications
+
+**Important:** Only use this tool on websites you own or have explicit permission to test.
+
+## 🛠️ Requirements
+
+See `requirements.txt` for the complete list of dependencies:
+- requests >= 2.28.0
+- rich >= 13.0.0
+- urllib3 >= 1.26.0
+- colorama >= 0.4.4
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🔗 Related Projects
+
+- [OWASP Security Headers](https://owasp.org/www-project-secure-headers/)
+- [Mozilla Observatory](https://observatory.mozilla.org/)
+- [Security Headers Scanner](https://securityheaders.com/)
+
+---
+
+**⭐ If you found this tool helpful, please give it a star!**
